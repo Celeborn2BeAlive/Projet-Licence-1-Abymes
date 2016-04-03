@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="default" />
+	<File name="affichageGraphique.c" open="1" top="0" tabpos="5">
+		<Cursor position="6397" topLine="151" />
+	</File>
+	<File name="affichageGraphique.h" open="1" top="0" tabpos="6">
+		<Cursor position="436" topLine="0" />
+	</File>
+	<File name="chargementCarte.c" open="0" top="0" tabpos="4">
+		<Cursor position="1026" topLine="0" />
+	</File>
+	<File name="console.c" open="0" top="0" tabpos="6">
+		<Cursor position="822" topLine="0" />
+	</File>
+	<File name="fonctions.h" open="1" top="0" tabpos="1">
+		<Cursor position="1309" topLine="5" />
+	</File>
+	<File name="fonctionsGraphiques.c" open="1" top="0" tabpos="2">
+		<Cursor position="29334" topLine="746" />
+	</File>
+	<File name="fonctionsJoueur.c" open="0" top="0" tabpos="5">
+		<Cursor position="3993" topLine="0" />
+	</File>
+	<File name="initialisationsStructures.c" open="0" top="0" tabpos="7">
+		<Cursor position="1049" topLine="0" />
+	</File>
+	<File name="main.c" open="1" top="0" tabpos="3">
+		<Cursor position="333" topLine="0" />
+	</File>
+	<File name="menuGraphique.c" open="1" top="1" tabpos="4">
+		<Cursor position="2340" topLine="57" />
+	</File>
+	<File name="structures.h" open="1" top="0" tabpos="7">
+		<Cursor position="763" topLine="12" />
+	</File>
+</CodeBlocks_layout_file>

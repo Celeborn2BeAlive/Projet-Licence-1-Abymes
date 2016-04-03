@@ -1,0 +1,464 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>XTech SVG Demo</title>
+  <style>
+    
+  </style>
+  <script type="text/javascript">
+   <![CDATA[ 
+   
+	function base(origine, v1_x, v1_y, v2_x, v2_y)
+	{
+	 this.O = origine;
+	 this.v1_x = v1_x;
+	 this.v1_y = v1_y;
+	 this.v2_x = v2_x;
+	 this.v2_y = v2_y;
+	}
+	
+	
+	function point(name, x, y, base)
+	{
+	 this.name = name;
+	 this.x = x;
+	 this.y = y;
+	 
+	 
+	 if(base != null) this.base = base;
+	 else this.base = "O";
+	}
+	
+	function drawLine(point1, point2, color)
+	{
+	 if(point1.base != "O")
+	 {
+	  p1_x = ((point1.base.v1_x)*point1.x  + (point1.base.v2_x)*point1.y) + point1.base.O.x;
+	  p1_y = ((point1.base.v1_y)*point1.x  + (point1.base.v2_y)*point1.y) + point1.base.O.y;
+	 }
+	 else
+	 {
+	  p1_x = point1.x;
+	  p1_y = point1.y;
+	 }
+	 
+	 if(point2.base != "O")
+	 {
+	  p2_x = ((point2.base.v1_x)*point2.x  + (point2.base.v2_x)*point2.y) + point2.base.O.x;
+	  p2_y = ((point2.base.v1_y)*point2.x  + (point2.base.v2_y)*point2.y) + point2.base.O.y;
+	 }
+	 else
+	 {
+	  p2_x = point2.x;
+	  p2_y = point2.y;
+	 }
+	 
+	 
+	 var new_line = document.getElementById("ligne_tronc").cloneNode(true);
+	 new_line.setAttribute("id", point1.name+point2.name);
+	 new_line.setAttribute("x1", p1_x);
+	 new_line.setAttribute("y1", p1_y);
+	 new_line.setAttribute("x2", p2_x);
+	 new_line.setAttribute("y2", p2_y);
+	 
+	 
+	 if(color == null) new_line.setAttribute("stroke", "black");
+	 else new_line.setAttribute("stroke", color);
+	 
+	 
+	 new_line.setAttribute("stroke-width", "1");
+	 
+	 document.getElementById("scene").appendChild(new_line);
+	}
+	
+	function drawWall(p1, p2, p3, p4, c1, c2, c3, c4)
+	{
+	 if(c1 == null) c1 = "black";
+	 if(c2 == null) c2 = "black";
+	 if(c3 == null) c3 = "black";
+	 if(c4 == null) c4 = "black";
+	
+	 drawLine(p1, p2, c1);
+	 drawLine(p2, p3, c2);
+	 drawLine(p3, p4, c3);
+	 drawLine(p4, p1, c4);
+	}
+	
+    function droiteParametree(vect, point)
+	{
+	 
+	 this.point = point;
+	 this.vect = vect;
+	 this.getCoord_x = getCoord_x;
+	 this.getCoord_y = getCoord_y;
+	 
+	 function getCoord_x(a)
+	 {
+	  var p_x = a;
+
+	  return p_x;
+	 }
+	 
+	 function getCoord_y(a)
+	 {
+	  var p_y = (this.vect.y*a)+this.vect.y*(-this.point.x)+this.point.y;
+	  
+	  return p_y;
+	 }
+	}
+	
+	function drawMap()
+	{
+	 if(position[2] == 1)
+	 {
+	
+		if(map[position[0] - 2][position[1]-1] == '*') 
+		{
+			drawWall(a0, b0, g0, h0);
+		}
+	
+		if(map[position[0] - 2][position[1]] == '*') 
+		{
+			drawWall(b0, c0, f0, g0);
+		}
+	 
+		if(map[position[0] - 2][position[1]+1] == '*') 
+		{
+			drawWall(c0, d0, e0, f0);
+		}
+	 
+	 
+	 
+		if(map[position[0] - 1][position[1]-1] == '*') 
+		{
+			drawWall(a1, b1, g1, h1);
+		}
+	
+		if(map[position[0] - 1][position[1]] == '*') 
+		{
+			drawWall(b1, c1, f1, g1);
+		}
+	 
+		if(map[position[0] - 1][position[1]+1] == '*') 
+		{
+			drawWall(c1, d1, e1, f1);
+		}
+	 
+	 
+	 
+		if(map[position[0] - 1][position[1]-1] == '*') 
+		{
+			drawWall(b1, b0, g0, g1);
+		}
+	
+		if(map[position[0] - 1][position[1]+1] == '*') 
+		{
+			drawWall(c1, c0, f0, f1);
+		}
+	 
+	 
+	 
+		if(map[position[0]][position[1]-1] == '*') 
+		{
+			drawWall(b1, b2, g2, g1);
+		}
+	 
+		if(map[position[0]][position[1]+1] == '*') 
+		{
+			drawWall(c1, c2, f2, f1);
+		}
+		
+	 }
+	 else if(position[2] == 2)
+	 {
+	 
+	  if(map[position[1]-1][position[0] - 2] == '*') 
+		{
+			drawWall(c0, d0, e0, f0);
+		}
+	
+		if(map[position[1]][position[0] - 2] == '*') 
+		{
+			drawWall(b0, c0, f0, g0);
+		}
+	 
+		if(map[position[1]+1][position[0] - 2] == '*') 
+		{
+		    drawWall(a0, b0, g0, h0);
+		}
+	 
+	 
+	 
+		if(map[position[1]-1][position[0] - 1] == '*') 
+		{
+			drawWall(c1, d1, e1, f1);
+		}
+	
+		if(map[position[1]][position[0] - 1] == '*') 
+		{
+			drawWall(b1, c1, f1, g1);
+		}
+	 
+		if(map[position[1]+1][position[0] - 1] == '*') 
+		{
+		    drawWall(a1, b1, g1, h1);
+		}
+	 
+	 
+	 
+		if(map[position[1]-1][position[0] - 1] == '*') 
+		{
+			drawWall(c1, c0, f0, f1);
+		}
+	
+		if(map[position[1]+1][position[0] - 1] == '*') 
+		{
+		    drawWall(b1, b0, g0, g1);
+		}
+	 
+	 
+	 
+		if(map[position[1]-1][position[0]] == '*') 
+		{
+			drawWall(c1, c2, f2, f1);
+		}
+	 
+		if(map[position[1]+1][position[0]] == '*') 
+		{
+		    drawWall(b1, b2, g2, g1);
+		}
+		
+	 }
+	 
+	 else if(position[2] == 3)
+	 {
+	 
+	  if(map[position[1]-1][position[0] + 2] == '*') 
+		{
+			drawWall(a0, b0, g0, h0);
+		}
+	
+		if(map[position[1]][position[0] + 2] == '*') 
+		{
+			drawWall(b0, c0, f0, g0);
+		}
+	 
+		if(map[position[1]+1][position[0] + 2] == '*') 
+		{
+			drawWall(c0, d0, e0, f0);	
+		}
+	 
+	 
+	 
+		if(map[position[1]-1][position[0] + 1] == '*') 
+		{
+			drawWall(a1, b1, g1, h1);
+		}
+	
+		if(map[position[1]][position[0] + 1] == '*') 
+		{
+			drawWall(b1, c1, f1, g1);
+		}
+	 
+		if(map[position[1]+1][position[0] + 1] == '*') 
+		{
+			drawWall(c1, d1, e1, f1);
+		}
+	 
+	 
+	 
+		if(map[position[1]-1][position[0] + 1] == '*') 
+		{
+			drawWall(b1, b0, g0, g1);
+		}
+	
+		if(map[position[1]+1][position[0] + 1] == '*') 
+		{
+		    drawWall(c1, c0, f0, f1);
+		}
+	 
+	 
+	 
+		if(map[position[1]-1][position[0]] == '*') 
+		{
+			drawWall(b1, b2, g2, g1);
+		}
+	 
+		if(map[position[1]+1][position[0]] == '*') 
+		{
+			drawWall(c1, c2, f2, f1);
+		}
+		
+	 }
+	 else if(position[2] == 4)
+	 {
+	
+		if(map[position[0] + 2][position[1]-1] == '*') 
+		{
+			drawWall(c0, d0, e0, f0);
+		}
+	
+		if(map[position[0] + 2][position[1]] == '*') 
+		{
+			drawWall(b0, c0, f0, g0);
+		}
+	 
+		if(map[position[0] + 2][position[1]+1] == '*') 
+		{
+		    drawWall(a0, b0, g0, h0);
+		}
+	 
+	 
+	 
+		if(map[position[0] + 1][position[1]-1] == '*') 
+		{
+			drawWall(c1, d1, e1, f1);
+		}
+	
+		if(map[position[0] + 1][position[1]] == '*') 
+		{
+			drawWall(b1, c1, f1, g1);
+		}
+	 
+		if(map[position[0] + 1][position[1]+1] == '*') 
+		{
+			drawWall(a1, b1, g1, h1);
+		}
+	 
+	 
+	 
+		if(map[position[0] + 1][position[1]-1] == '*') 
+		{
+			drawWall(c1, c0, f0, f1);
+		}
+	
+		if(map[position[0] + 1][position[1]+1] == '*') 
+		{
+		    drawWall(b1, b0, g0, g1);
+		}
+	 
+	 
+	 
+		if(map[position[0]][position[1]-1] == '*') 
+		{
+			drawWall(c1, c2, f2, f1);
+		}
+	 
+		if(map[position[0]][position[1]+1] == '*') 
+		{
+		    drawWall(b1, b2, g2, g1);
+		}
+		
+	 }
+	}
+	]]>
+  </script>
+</head>
+<body id="body"
+   style="position:absolute; z-index:0; left:0%; top:0%; width:100%; height:100%; margin:0px">
+
+  
+  <svg id="scene" xmlns="http://www.w3.org/2000/svg" version="1.1"
+    viewBox="0 0 0 0"
+    preserveAspectRatio="xMidYMid slice">
+    <line id="ligne_tronc" x1="" y1="" x2="" y2="" stroke="" stroke-width="" />
+
+	
+
+  </svg>
+  
+  <script type="text/javascript">
+  <![CDATA[ 
+   
+   var O = new point("O", 0, 0);
+  
+  
+   var L = 350;
+   var l = 200;
+  
+  
+   var b1 = new point("b1", 350, 350);
+   
+   
+   var B1 = new base(b1, 1, 0, 0, -1);
+   
+   
+   var c1 = new point("c1", L, 0, B1);
+   var g1 = new point("g1", 0, l, B1);
+   var f1 = new point("f1", L, l, B1);
+
+   var a1 = new point("a1", -L, 0, B1);
+   var d1 = new point("d1", 2*L, 0, B1);
+   var e1 = new point("e1", 2*L, l, B1);
+   var h1 = new point("h1", -L, l, B1);
+	
+   
+   var b0 = new point("b0", L/4, 60, B1);
+   var a0 = new point("a0", b0.x - L/2, b0.y, B1);
+   var c0 = new point("c0", b0.x + L/2, b0.y, B1);
+   var d0 = new point("d0", b0.x + L, b0.y, B1);
+   
+   
+   var vect_alpha = new point("alpha", 1, b0.y/b0.x, B1);
+   var alpha = new droiteParametree(vect_alpha, O);
+   
+   var vect_gama = new point("gama", 1, -b0.y/b0.x, B1);
+   var gama = new droiteParametree(vect_gama, g1);
+   
+   var vect_delta = new point("delta", 1, b0.y/b0.x, B1);
+   var delta = new droiteParametree(vect_delta, f1);
+   
+   var vect_beta = new point("beta", 1, -b0.y/b0.x, B1);
+   var beta = new droiteParametree(vect_beta, c1);
+   
+   
+   var g0 = new point("g0", gama.getCoord_x(b0.x), gama.getCoord_y(b0.x), B1);
+   var h0 = new point("h0", g0.x - L/2, g0.y, B1);
+   var f0 = new point("f0", g0.x + L/2, g0.y, B1);
+   var e0 = new point("e0", g0.x + L, g0.y, B1);
+   
+   
+   var b2 = new point("b2", alpha.getCoord_x(-L/2), alpha.getCoord_y(-L/2), B1);
+   var a2 = new point("a2", b2.x - 2*L, b2.y, B1);
+   var c2 = new point("c2", b2.x + 2*L, b2.y, B1);
+   var d2 = new point("d2", b2.x + 4*L, b2.y, B1);
+   
+   var g2 = new point("g2", gama.getCoord_x(-L/2), gama.getCoord_y(-L/2), B1);
+   var h2 = new point("h2", g2.x - 2*L, g2.y, B1);
+   var f2 = new point("f2", g2.x + 2*L, g2.y, B1);
+   var e2 = new point("e2", g2.x + 4*L, g2.y, B1);
+   
+   
+   var b3 = new point("b3", alpha.getCoord_x(-3*L/2), alpha.getCoord_y(-3*L/2), B1);
+   var a3 = new point("a3", b3.x - 4*L, b3.y, B1);
+   var c3 = new point("c3", b3.x + 4*L, b3.y, B1);
+   var d3 = new point("d3", b3.x + 8*L, b3.y, B1);
+   
+   var g3 = new point("g3", gama.getCoord_x(-3*L/2), gama.getCoord_y(-3*L/2), B1);
+   var h3 = new point("h3", g3.x - 4*L, g3.y, B1);
+   var f3 = new point("f3", g3.x + 4*L, g3.y, B1);
+   var e3 = new point("e3", g3.x + 8*L, g3.y, B1);
+   
+   var s_hg = new point("hg", gama.getCoord_x(-30), gama.getCoord_y(-30), B1);
+   var s_hd = new point("hd", delta.getCoord_x(L+30), delta.getCoord_y(L+30), B1);
+   var s_bg = new point("bg", alpha.getCoord_x(-30), alpha.getCoord_y(-30), B1);
+   var s_bd = new point("bd", beta.getCoord_x(L+30), beta.getCoord_y(L+30), B1);
+   
+   drawWall(s_bg, s_bd, s_hd, s_hg, "red", "red", "red", "red");
+   
+   var map = new Array();
+   map[0] = new Array('*','*','*','*','*');
+   map[1] = new Array('*','*',' ',' ','*');
+   map[2] = new Array('*','*',' ','*','*');
+   map[3] = new Array('*',' ',' ','*','*');
+   map[4] = new Array('*',' ','*','*','*');
+   
+   position = new Array(2, 2, 4);
+   
+   drawMap()
+   ]]>
+  </script>
+
+</body>
+</html>

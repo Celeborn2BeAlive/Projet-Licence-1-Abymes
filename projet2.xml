@@ -1,0 +1,878 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Projet C</title>
+  <style>
+    
+  </style>
+  <script type="text/javascript">
+   <![CDATA[ 
+
+    function base(origine, v1_x, v1_y, v2_x, v2_y)
+	{
+	 this.O = origine;
+	 this.v1_x = v1_x;
+	 this.v1_y = v1_y;
+	 this.v2_x = v2_x;
+	 this.v2_y = v2_y;
+	}
+   
+    function wall(p1, p2, p3, p4)
+	{
+	 this.p1 = p1;
+	 this.p2 = p2;
+	 this.p3 = p3;
+	 this.p4 = p4;
+	}
+   
+    function point(x, y, base)
+	{
+	 this.x = x;
+	 this.y = y;
+	 
+	 if(base != null) this.base = base;
+	 else this.base = "O";
+	}
+    
+	
+	function drawLine(point1, point2, color)
+	{
+	 if(point1.base != "O")
+	 {
+	  p1_x = ((point1.base.v1_x)*point1.x  + (point1.base.v2_x)*point1.y) + point1.base.O.x;
+	  p1_y = ((point1.base.v1_y)*point1.x  + (point1.base.v2_y)*point1.y) + point1.base.O.y;
+	 }
+	 else
+	 {
+	  p1_x = point1.x;
+	  p1_y = point1.y;
+	 }
+	 
+	 if(point2.base != "O")
+	 {
+	  p2_x = ((point2.base.v1_x)*point2.x  + (point2.base.v2_x)*point2.y) + point2.base.O.x;
+	  p2_y = ((point2.base.v1_y)*point2.x  + (point2.base.v2_y)*point2.y) + point2.base.O.y;
+	 }
+	 else
+	 {
+	  p2_x = point2.x;
+	  p2_y = point2.y;
+	 }
+	 
+	 var new_line = neo_line.cloneNode(true);
+	 new_line.setAttribute("x1", p1_x);
+	 new_line.setAttribute("y1", p1_y);
+	 new_line.setAttribute("x2", p2_x);
+	 new_line.setAttribute("y2", p2_y);
+	 
+	 
+	 if(color == null) new_line.setAttribute("stroke", "black");
+	 else new_line.setAttribute("stroke", color);
+	 
+	 
+	 new_line.setAttribute("stroke-width", "1");
+	 
+	 document.getElementById("scene").appendChild(new_line);
+	}
+	
+	function drawRect(p1, p2, p3, p4, c1, c2, c3, c4)
+	{
+	 if(c1 == null && c2 == null && c3 == null && c4 == null) 
+	 {
+	  c1 = "black";
+	  c2 = "black";
+	  c3 = "black";
+	  c4 = "black";
+	 }
+	 else
+	 {
+	  c2 = c1;
+	  c3 = c1;
+	  c4 = c1;
+	 }
+	
+	 drawLine(p1, p2, c1);
+	 drawLine(p2, p3, c2);
+	 drawLine(p3, p4, c3);
+	 drawLine(p4, p1, c4);
+	}
+	
+	function drawWall(wall, color)
+	{
+	 if(wall.p1.base != "O")
+	 {
+	  p1_x = ((wall.p1.base.v1_x)*wall.p1.x  + (wall.p1.base.v2_x)*wall.p1.y) + wall.p1.base.O.x;
+	  p1_y = ((wall.p1.base.v1_y)*wall.p1.x  + (wall.p1.base.v2_y)*wall.p1.y) + wall.p1.base.O.y;
+	 }
+	 else
+	 {
+	  p1_x = wall.p1.x;
+	  p1_y = wall.p1.y;
+	 }
+	 
+	 if(wall.p2.base != "O")
+	 {
+	  p2_x = ((wall.p2.base.v1_x)*wall.p2.x  + (wall.p2.base.v2_x)*wall.p2.y) + wall.p2.base.O.x;
+	  p2_y = ((wall.p2.base.v1_y)*wall.p2.x  + (wall.p2.base.v2_y)*wall.p2.y) + wall.p2.base.O.y;
+	 }
+	 else
+	 {
+	  p2_x = wall.p2.x;
+	  p2_y = wall.p2.y;
+	 }
+	 
+	 if(wall.p3.base != "O")
+	 {
+	  p3_x = ((wall.p3.base.v1_x)*wall.p3.x  + (wall.p3.base.v2_x)*wall.p3.y) + wall.p3.base.O.x;
+	  p3_y = ((wall.p3.base.v1_y)*wall.p3.x  + (wall.p3.base.v2_y)*wall.p3.y) + wall.p3.base.O.y;
+	 }
+	 else
+	 {
+	  p3_x = wall.p3.x;
+	  p3_y = wall.p3.y;
+	 }
+	 
+	 if(wall.p4.base != "O")
+	 {
+	  p4_x = ((wall.p4.base.v1_x)*wall.p4.x  + (wall.p4.base.v2_x)*wall.p4.y) + wall.p4.base.O.x;
+	  p4_y = ((wall.p4.base.v1_y)*wall.p4.x  + (wall.p4.base.v2_y)*wall.p4.y) + wall.p4.base.O.y;
+	 }
+	 else
+	 {
+	  p4_x = wall.p4.x;
+	  p4_y = wall.p4.y;
+	 }
+	 
+	 var new_wall = document.getElementById("poly_tronc").cloneNode(true);
+	 new_wall.setAttribute("points", p1_x+","+p1_y+" "+p2_x+","+p2_y+" "+p3_x+","+p3_y+" "+p4_x+","+p4_y);
+	 
+	 if(color != null) new_wall.setAttribute("fill", color);
+	 
+	 document.getElementById("scene").appendChild(new_wall);
+	}
+	 
+	 
+	
+	
+	function applicationAffine(coeff, point)
+	{
+	 this.coeff = coeff;
+	 this.point = point;
+	 
+	 this.getPoint = getPoint;
+	 
+	 function getPoint(x)
+	 {
+	  var y = this.coeff*x + ((this.coeff*(-this.point.x))+this.point.y);
+	  
+	  return y;
+	 }
+	}
+	
+	function drawAll()
+	{
+	 var nbre_lignes = document.getElementsByTagName('line').length;
+     for(i = 0; i < nbre_lignes; i++)
+     document.getElementsByTagName('svg')[0].removeChild(document.getElementsByTagName('line')[0]); 
+		 
+
+	 
+	 
+	 drawLine(s[0][0], s[3][0], "red");
+	 drawLine(s[0][1], s[3][1], "red");
+	 drawLine(s[0][2], s[3][2], "red");
+	 drawLine(s[0][3], s[3][3], "red");
+	 
+	 drawLine(s[0][0], s[0][1], "red");
+	 drawLine(s[0][2], s[0][3], "red");
+	 drawLine(s[3][0], s[3][1], "red");
+	 drawLine(s[3][2], s[3][3], "red");
+	 
+	 drawLine(s[0][0], s[0][3], "blue");
+	 drawLine(s[3][0], s[3][3], "blue");
+	 drawLine(s[3][1], s[3][2], "blue");
+	 drawLine(s[0][1], s[0][2], "blue");
+	 
+	 /*
+	 drawLine(s[1][0], s[1][3]);
+	 drawLine(s[2][1], s[2][2]);
+	 drawLine(s[1][1], s[1][2]);
+	 drawLine(s[2][0], s[2][3]);
+	 
+	 drawLine(s[0][4], s[0][7]);
+	 drawLine(s[0][5], s[0][6]);
+	 drawLine(s[3][5], s[3][6]);
+	 drawLine(s[3][4], s[3][7]);
+	 
+	 drawLine(s[0][4], s[3][4]);
+	 drawLine(s[0][5], s[3][5]);
+	 drawLine(s[0][7], s[3][7]);
+	 drawLine(s[0][6], s[3][6]);
+	 
+	 drawLine(s[1][0], s[1][1]);
+	 drawLine(s[2][0], s[2][1]);
+	 drawLine(s[2][3], s[2][2]);
+	 drawLine(s[1][3], s[1][2]);
+	 
+
+	*/
+	 
+	}
+
+	
+	function loadMap()
+	{
+	 var i = 0;
+	 var j = 0;
+	 var a = -1;
+	 var b = 3;
+	 
+	
+	 switch(direction)
+	 {
+	  
+	  
+	  case 0 :
+	  
+	   var c = -1;
+	   
+	   for(i = 2; i >= 0; i--)
+	   {
+	    b--;
+	    for(j = -1; j <= 1; j++)
+		{
+		 c++;
+		 if((joueur[0] - i) >= 0 && (joueur[1] + j) >= 0 && (joueur[1] + j) < map[0].length)
+		  { 
+		   if(map[joueur[0] - i][joueur[1] + j] == '*')
+		   {
+		    a++;
+		    walls_load[a] = walls[b][c]
+			if(i == 1)
+			{
+			 a++
+			 if(j == -1) walls_load[a] = walls[1][3];
+			 if(j == 1) walls_load[a] = walls[1][4];
+			}
+		   }
+		  }
+		  if(j == 1) c = -1;
+		 }
+		}
+	   
+	  break;
+	  
+	  case 1 :
+	  
+	   var c = -1;
+	   
+	   for(j = 2; j >= 0; j--)
+	   {
+	    b--;
+	    for(i = -1; i <= 1; i++)
+	    {
+		 c++;
+		 if((joueur[0] + i) >= 0 && (joueur[0] + i) < map.length && (joueur[1] + j) < map[0].length)
+		  { 
+		   if(map[joueur[0] + i][joueur[1] + j] == '*')
+		   {
+		    a++;
+		    walls_load[a] = walls[b][c]
+			if(j == 1)
+			{
+			 a++
+			 if(i == -1) walls_load[a] = walls[1][3];
+			 if(i == 1) walls_load[a] = walls[1][4];
+			}
+		   }
+		  }
+		  if(i == 1) c = -1;
+		 }
+		}
+	  
+	  break;
+	  
+	  case 2 :
+	   
+	   var c = 3;
+	   
+	   for(i = 2; i >= 0; i--)
+	   {
+	    b--;
+	    for(j = -1; j <= 1; j++)
+		{
+		 c--;
+		 if((joueur[0] + i) < map.length && (joueur[1] + j) >= 0 && (joueur[1] + j) < map[0].length)
+		  { 
+		   if(map[joueur[0] + i][joueur[1] + j] == '*')
+		   {
+		    a++;
+		    walls_load[a] = walls[b][c]
+			if(i == 1)
+			{
+			 a++
+			 if(j == 1) walls_load[a] = walls[1][3];
+			 if(j == -1) walls_load[a] = walls[1][4];
+			}
+		   }
+		  }
+		  if(j == 1) c = 3;
+		 }
+		}
+	  
+	  break;
+	  
+	  
+	  case 3 :
+	  
+	   var c = 3;
+	   
+	   for(j = 2; j >= 0; j--)
+	   {
+	    b--;
+	    for(i = -1; i <= 1; i++)
+	    {
+		 c--;
+		 if((joueur[0] + i) >= 0 && (joueur[0] + i) < map.length && (joueur[1] - j) >= 0)
+		  { 
+		   if(map[joueur[0] + i][joueur[1] - j] == '*')
+		   {
+		    a++;
+		    walls_load[a] = walls[b][c];
+			if(j == 1)
+			{
+			 a++;
+			 if(i == 1) walls_load[a] = walls[1][3];
+			 if(i == -1) walls_load[a] = walls[1][4];
+			}
+		   }
+		  }
+		  if(i == 1) c = 3;
+		 }
+		}
+	  
+	  break;
+	 
+	 }
+	}
+	
+	function drawMap()
+	{
+	 var i = null;
+	 for(i = 0; i < walls_load.length; i++)
+	 {
+	  drawWall(walls_load[i]);
+	 }
+	}
+	
+	
+	function moveLeft(a)
+	{
+	
+	 a--;
+	 var i = null;
+	 var j = null;
+	 
+	 for(i = 0; i <= 3; i++)
+	 {
+	  for(j = 0; j <=7; j++)
+	  {
+	   document.getElementById("lool").innerHTML += "<br />X s"+i+","+j+" : "+s[i][j].x+" + "+coeff_x[i][j]+"<br />Y s"+i+","+j+" : "+s[i][j].y+" + "+coeff_y[i][j]+"<br />";
+	   s[i][j].x = s[i][j].x + 1*coeff_x[i][j];
+	   s[i][j].y = s[i][j].y + 1*coeff_y[i][j];
+	  }
+	 }
+	 
+	 
+	 drawAll();
+	}
+	 
+	
+	function getAllPoints()
+	{
+	 var i = 0;
+
+	 while(i <= 3)
+	 {
+	  s[i][4] = new point(0, 0, B[1]);
+	  s[i][4].x = (2*s[i][0].x+s[i][1].x)/3;
+	  s[i][4].y = (2*s[i][0].y+s[i][1].y)/3;
+	 
+	  s[i][7] = new point(0, 0, B[1]);
+	  s[i][7].x = (2*s[i][3].x+s[i][2].x)/3;
+	  s[i][7].y = (2*s[i][3].y+s[i][2].y)/3;
+	 
+	  drawLine(s[i][4], s[i][7]);
+	 
+	  s[i][5] = new point(0, 0, B[1]);
+	  s[i][5].x = (s[i][0].x+2*s[i][1].x)/3;
+	  s[i][5].y = (s[i][0].y+2*s[i][1].y)/3;
+	 
+	  s[i][6] = new point(0, 0, B[1]);
+	  s[i][6].x = (s[i][3].x+2*s[i][2].x)/3;
+	  s[i][6].y = (s[i][3].y+2*s[i][2].y)/3;
+	  
+	  drawLine(s[i][6], s[i][5]);
+	  
+	  i += 3
+	 }
+
+	 var alpha = new applicationAffine(s[3][0].y/s[3][0].x, O);
+	 var gama = new applicationAffine(-s[3][0].y/s[3][0].x, s[0][3]);
+	 var beta = new applicationAffine(-s[3][0].y/s[3][0].x, s[0][1]);
+     var delta = new applicationAffine(s[3][0].y/s[3][0].x, s[0][2]);
+     
+	 
+	 
+	 s[2][0] = new point(0, 0, B[1]);
+	 s[2][0].x = 3*(L/4)-3*L;
+	 s[2][0].y = alpha.getPoint(s[2][0].x);
+	  
+	 s[2][3] = new point(0, 0, B[1]);
+	 s[2][3].x = s[2][0].x;
+	 s[2][3].y = gama.getPoint(s[2][0].x);
+	  
+	 drawLine(s[2][0], s[2][3]);
+	  
+	 s[1][0] = new point(0, 0, B[1]);
+	 s[1][0].x = -3*(L/4);
+	 s[1][0].y = alpha.getPoint(s[1][0].x);
+	  
+	 s[1][3] = new point(0, 0, B[1]);
+	 s[1][3].x = s[1][0].x;
+	 s[1][3].y = gama.getPoint(s[1][0].x);
+	 
+	 drawLine(s[1][0], s[1][3]);
+	 
+	 
+	 
+	 s[2][1] = new point(0, 0, B[1]);
+	 s[2][1].x = s[2][0].x + 6*L;
+	 s[2][1].y = s[2][0].y;
+	  
+	 s[2][2] = new point(0, 0, B[1]);
+	 s[2][2].x = s[2][3].x + 6*L;
+	 s[2][2].y = s[2][3].y;
+	  
+	 drawLine(s[2][1], s[2][2]);
+	  
+	 s[1][1] = new point(0, 0, B[1]);
+	 s[1][1].x = s[1][0].x + 3*L;
+	 s[1][1].y = s[1][0].y;
+	  
+	 s[1][2] = new point(0, 0, B[1]);
+	 s[1][2].x = s[1][3].x + 3*L;
+	 s[1][2].y = s[1][3].y;
+	 
+	 drawLine(s[1][1], s[1][2]);
+	
+	
+	 drawLine(s[0][0], s[3][0]);
+	 drawLine(s[3][0], s[3][1]);
+	 drawLine(s[3][1], s[0][1]);
+	 drawLine(s[0][1], s[0][0]);
+	 
+	 drawLine(s[0][3], s[3][3]);
+	 drawLine(s[3][3], s[3][2]);
+	 drawLine(s[3][2], s[0][2]);
+	 drawLine(s[0][2], s[0][3]);
+	
+	 /*drawLine(s[0][4], s[3][4]);
+	 drawLine(s[0][5], s[3][5]);
+	 drawLine(s[0][7], s[3][7]);
+	 drawLine(s[0][6], s[3][6]);*/
+	 
+	 /*drawLine(s[1][0], s[1][1]);
+	 drawLine(s[2][0], s[2][1]);
+	 drawLine(s[2][3], s[2][2]);
+	 drawLine(s[1][3], s[1][2]);*/
+	
+	
+	
+	
+	
+	}
+	
+	
+	function getCoeffMoveLeft()
+	{
+	 
+	 //8 coins du grand cubes
+	 for(i = 0; i <= 1; i++)
+	 {
+	  coeff[i][3][0] = (s[0][0].x - s[3][0].x)/20;
+	  coeff[i][0][0] = (s[0][1].x - s[0][0].x)/20;
+	  coeff[i][0][3] = (s[0][2].x - s[0][3].x)/20;
+	  coeff[i][3][3] = (s[0][3].x - s[3][3].x)/20;
+	  coeff[i][3][1] = (s[3][0].x - s[3][1].x)/20;
+	  coeff[i][0][1] = (s[3][1].x - s[0][1].x)/20;
+	  coeff[i][0][2] = (s[3][2].x - s[0][2].x)/20;
+	  coeff[i][3][2] = (s[3][3].x - s[3][2].x)/20;
+	 }
+
+
+	 var s_3_3_prim = new point(s[3][3].x - s[0][3].x, s[3][3].y - s[0][3].y, B[1]);
+	 var s_3_3_ter = new point(s[3][0].x - s[3][3].x, s[3][0].y - s[3][3].y, B[1]);
+	  
+	 //point s[1][3] :
+
+	 var s_1_3_prim = new point(s[1][3].x - s[0][3].x, s[1][3].y - s[0][3].y, B[1]);
+	 var s_1_3_ter = new point(s[3][2].x - s[3][3].x, s[3][2].y - s[3][3].y, B[1]);
+	  
+	 coeff_o[1][3] = (Math.sqrt(Math.pow(s_1_3_prim.x, 2) + Math.pow(s_1_3_prim.y, 2)))/(Math.sqrt(Math.pow(s_3_3_prim.x, 2) + Math.pow(s_3_3_prim.y, 2)));
+	  
+	 coeff_a = (Math.sqrt(Math.pow(s_1_3_ter.x, 2) + Math.pow(s_1_3_ter.y, 2)))/(Math.sqrt(Math.pow(s_3_3_ter.x, 2) + Math.pow(s_3_3_ter.y, 2)));
+
+	 coeff_f[1][3] = (coeff_a - coeff_o[1][3])/20;
+	  
+	  
+	 //point s[2][3] :
+	  
+	 var s_2_3_prim = new point(s[2][3].x - s[0][3].x, s[2][3].y - s[0][3].y, B[1]);
+	 var s_2_3_ter = new point(s[3][1].x - s[3][3].x, s[3][1].y - s[3][3].y, B[1]);
+	  
+	 coeff_o[2][3] = (Math.sqrt(Math.pow(s_2_3_prim.x, 2) + Math.pow(s_2_3_prim.y, 2)))/(Math.sqrt(Math.pow(s_3_3_prim.x, 2) + Math.pow(s_3_3_prim.y, 2)));
+	  
+	 coeff_a = (Math.sqrt(Math.pow(s_2_3_ter.x, 2) + Math.pow(s_2_3_ter.y, 2)))/(Math.sqrt(Math.pow(s_3_3_ter.x, 2) + Math.pow(s_3_3_ter.y, 2)));
+	  
+	 coeff_f[2][3] = (coeff_a - coeff_o[2][3])/20;
+	 
+	 
+	 
+	 
+	 
+	 
+	 coeff_x[2][0] = (s[0][1].x - s[2][0].x)/20;
+	 coeff_y[2][0] = (s[0][1].y - s[2][0].y)/20;
+	  
+	  
+	 coeff_x[1][7] = (s[0][5].x - s[1][7].x)/20;
+	 coeff_y[1][7] = (s[0][5].y - s[1][7].y)/20;
+	 coeff_x[2][7] = (s[0][6].x - s[2][7].x)/20;
+	 coeff_y[2][7] = (s[0][6].y - s[2][7].y)/20;
+	  
+	 
+	 
+	 coeff_x[0][5] = (s[2][4].x - s[0][5].x)/20;
+	 coeff_y[0][5] = (s[2][4].y - s[0][5].y)/20;
+	 coeff_x[3][5] = (s[2][7].x - s[3][5].x)/20;
+	 coeff_y[3][5] = (s[2][7].y - s[3][5].y)/20;
+	 
+	 coeff_x[0][2] = (s[2][3].x - s[0][2].x)/20;
+	 coeff_y[0][2] = (s[2][3].y - s[0][2].y)/20;
+	 coeff_x[3][2] = (s[2][0].x - s[3][2].x)/20;
+	 coeff_y[3][2] = (s[2][0].y - s[3][2].y)/20;
+	 
+	 
+	  coeff_x[0][6] = (s[1][4].x - s[0][6].x)/20;
+	  coeff_y[0][6] = (s[1][4].y - s[0][6].y)/20;
+	  coeff_x[3][6] = (s[1][7].x - s[3][6].x)/20;
+	  coeff_y[3][6] = (s[1][7].y - s[3][6].y)/20;
+	 
+	  coeff_x[0][1] = (s[1][3].x - s[0][1].x)/20;
+	  coeff_y[0][1] = (s[1][3].y - s[0][1].y)/20;
+	  coeff_x[3][1] = (s[1][0].x - s[3][1].x)/20;
+	  coeff_y[3][1] = (s[1][0].y - s[3][1].y)/20;
+	 
+	 
+	  
+	  
+	  
+	  
+	  
+	  var s_3_4_prim = new point(s[3][4].x - s[0][4].x, s[3][4].y - s[0][4].y, B[1]);
+	  var s_3_4_ter = new point(s[3][7].x - s[3][4].x, s[3][7].y - s[3][4].y, B[1]);
+	  
+	  //point s[1][4] :
+
+	  var s_1_4_prim = new point(s[1][4].x - s[0][4].x, s[1][4].y - s[0][4].y, B[1]);
+	  var s_1_4_ter = new point(s[3][5].x - s[3][4].x, s[3][5].y - s[3][4].y, B[1]);
+	  
+	  coeff_o[1][4] = (Math.sqrt(Math.pow(s_1_4_prim.x, 2) + Math.pow(s_1_4_prim.y, 2)))/(Math.sqrt(Math.pow(s_3_4_prim.x, 2) + Math.pow(s_3_4_prim.y, 2)));
+	  
+	  coeff_a = (Math.sqrt(Math.pow(s_1_4_ter.x, 2) + Math.pow(s_1_4_ter.y, 2)))/(Math.sqrt(Math.pow(s_3_4_ter.x, 2) + Math.pow(s_3_4_ter.y, 2)));
+	  
+	  coeff_f[1][4] = (coeff_a - coeff_o[1][4])/20;
+	  
+	  
+	  //point s[2][4] :
+	  
+	  var s_2_4_prim = new point(s[2][4].x - s[0][4].x, s[2][3].y - s[0][4].y, B[1]);
+	  var s_2_4_ter = new point(s[3][6].x - s[3][4].x, s[3][6].y - s[3][4].y, B[1]);
+	  
+	  coeff_o[2][4] = (Math.sqrt(Math.pow(s_2_4_prim.x, 2) + Math.pow(s_2_4_prim.y, 2)))/(Math.sqrt(Math.pow(s_3_4_prim.x, 2) + Math.pow(s_3_4_prim.y, 2)));
+	  
+	  coeff_a = (Math.sqrt(Math.pow(s_2_4_ter.x, 2) + Math.pow(s_2_4_ter.y, 2)))/(Math.sqrt(Math.pow(s_3_4_ter.x, 2) + Math.pow(s_3_4_ter.y, 2)));
+	  
+	  coeff_f[2][4] = (coeff_a - coeff_o[2][4])/20;
+	  
+	  //
+	  
+	  var s_3_0_prim = new point(s[3][0].x - s[0][0].x, s[3][0].y - s[0][0].y, B[1]);
+	  var s_3_0_ter = new point(s[0][0].x - s[0][3].x, s[0][0].y - s[0][3].y, B[1]);
+	  
+	  //point s[1][0] :
+
+	  var s_1_0_prim = new point(s[1][0].x - s[0][0].x, s[1][0].y - s[0][0].y, B[1]);
+	  var s_1_0_ter = new point(s[0][2].x - s[0][3].x, s[0][2].y - s[0][3].y, B[1]);
+	  
+	  coeff_o[1][0] = (Math.sqrt(Math.pow(s_1_0_prim.x, 2) + Math.pow(s_1_0_prim.y, 2)))/(Math.sqrt(Math.pow(s_3_0_prim.x, 2) + Math.pow(s_3_0_prim.y, 2)));
+	  
+	  coeff_a = (Math.sqrt(Math.pow(s_1_0_ter.x, 2) + Math.pow(s_1_0_ter.y, 2)))/(Math.sqrt(Math.pow(s_3_0_ter.x, 2) + Math.pow(s_3_0_ter.y, 2)));
+
+	  coeff_f[1][0] = (coeff_a - coeff_o[1][0])/20;
+	 
+	  
+	  //point s[2][3] :
+	  
+	  var s_2_3_prim = new point(s[2][3].x - s[0][3].x, s[2][3].y - s[0][3].y, B[1]);
+	  var s_2_3_ter = new point(s[3][1].x - s[3][3].x, s[3][1].y - s[3][3].y, B[1]);
+	  
+	  coeff_o[2][3] = (Math.sqrt(Math.pow(s_2_3_prim.x, 2) + Math.pow(s_2_3_prim.y, 2)))/(Math.sqrt(Math.pow(s_3_3_prim.x, 2) + Math.pow(s_3_3_prim.y, 2)));
+	  
+	  coeff_a = (Math.sqrt(Math.pow(s_2_3_ter.x, 2) + Math.pow(s_2_3_ter.y, 2)))/(Math.sqrt(Math.pow(s_3_3_ter.x, 2) + Math.pow(s_3_3_ter.y, 2)));
+	  
+	  coeff_f[2][3] = (coeff_a - coeff_o[2][3])/20;
+	  
+	  
+	  
+	  
+	  var s_3_4_prim = new point(s[3][4].x - s[0][4].x, s[3][4].y - s[0][4].y, B[1]);
+	  var s_3_4_ter = new point(s[3][7].x - s[3][4].x, s[3][7].y - s[3][4].y, B[1]);
+	  
+	  //point s[1][4] :
+
+	  var s_1_4_prim = new point(s[1][4].x - s[0][4].x, s[1][4].y - s[0][4].y, B[1]);
+	  var s_1_4_ter = new point(s[3][5].x - s[3][4].x, s[3][5].y - s[3][4].y, B[1]);
+	  
+	  coeff_o[1][4] = (Math.sqrt(Math.pow(s_1_4_prim.x, 2) + Math.pow(s_1_4_prim.y, 2)))/(Math.sqrt(Math.pow(s_3_4_prim.x, 2) + Math.pow(s_3_4_prim.y, 2)));
+	  
+	  coeff_a = (Math.sqrt(Math.pow(s_1_4_ter.x, 2) + Math.pow(s_1_4_ter.y, 2)))/(Math.sqrt(Math.pow(s_3_4_ter.x, 2) + Math.pow(s_3_4_ter.y, 2)));
+	  
+	  coeff_f[1][4] = (coeff_a - coeff_o[1][4])/20;
+	  
+	  
+	  //point s[2][4] :
+	  
+	  var s_2_4_prim = new point(s[2][4].x - s[0][4].x, s[2][3].y - s[0][4].y, B[1]);
+	  var s_2_4_ter = new point(s[3][6].x - s[3][4].x, s[3][6].y - s[3][4].y, B[1]);
+	  
+	  coeff_o[2][4] = (Math.sqrt(Math.pow(s_2_4_prim.x, 2) + Math.pow(s_2_4_prim.y, 2)))/(Math.sqrt(Math.pow(s_3_4_prim.x, 2) + Math.pow(s_3_4_prim.y, 2)));
+	  
+	  coeff_a = (Math.sqrt(Math.pow(s_2_4_ter.x, 2) + Math.pow(s_2_4_ter.y, 2)))/(Math.sqrt(Math.pow(s_3_4_ter.x, 2) + Math.pow(s_3_4_ter.y, 2)));
+	  
+	  coeff_f[2][4] = (coeff_a - coeff_o[2][4])/20;
+	 
+	}
+	
+	
+	function moveLeft(a, b)
+	{
+     f++;
+	 a--;
+	 var i = null;
+	 var j = null;
+	 
+
+	  for(j = 0; j <=7; j++)
+	  {
+		s[0][j].x = s[0][j].x + b*coeff_x[0][j];
+	    s[0][j].y = s[0][j].y + b*coeff_y[0][j];
+		s[3][j].x = s[3][j].x + b*coeff_x[3][j];
+	    s[3][j].y = s[3][j].y + b*coeff_y[3][j];
+	  }
+	  
+	  for(i = 1; i <=2; i++)
+	  {
+	   s[i][0].x = s[i][0].x + (b)*coeff_x[i][0] ;
+	   s[i][0].y = s[i][0].y + (b)*coeff_y[i][0] ;
+	   s[i][7].x = s[i][7].x + (b)*coeff_x[i][7] ;
+	   s[i][7].y = s[i][7].y + (b)*coeff_y[i][7] ;
+	   s[i][4].x = s[i][4].x + (b)*coeff_x[i][4] ;
+	   s[i][4].y = s[i][4].y + (b)*coeff_y[i][4] ;
+	   s[i][3].x = s[i][3].x + (b)*coeff_x[i][3] ;
+	   s[i][3].y = s[i][3].y + (b)*coeff_y[i][3] ;
+	  }
+	  
+
+      s_a_x[1][3] = (s[3][3].x - s[0][3].x)*(coeff_o[1][3] + coeff_f[1][3]*f);
+	  s_a_y[1][3] = (s[3][3].y - s[0][3].y)*(coeff_o[1][3] + coeff_f[1][3]*f);
+	  
+	  s[1][3].x = s_a_x[1][3] + s[0][3].x;
+	  s[1][3].y = s_a_y[1][3] + s[0][3].y;
+	 
+	  s_a_x[2][3] = (s[3][3].x - s[0][3].x)*(coeff_o[2][3] + coeff_f[2][3]*f);
+	  s_a_y[2][3] = (s[3][3].y - s[0][3].y)*(coeff_o[2][3] + coeff_f[2][3]*f);
+	  
+	  s[2][3].x = s_a_x[2][3] + s[0][3].x;
+	  s[2][3].y = s_a_y[2][3] + s[0][3].y;
+	  
+	  
+	  
+	  s_a_x[1][4] = (s[3][4].x - s[0][4].x)*(coeff_o[1][4] + coeff_f[1][4]*f);
+	  s_a_y[1][4] = (s[3][4].y - s[0][4].y)*(coeff_o[1][4] + coeff_f[1][4]*f);
+	  
+	  s[1][4].x = s_a_x[1][4] + s[0][4].x;
+	  s[1][4].y = s_a_y[1][4] + s[0][4].y;
+	 
+	  s_a_x[2][4] = (s[3][4].x - s[0][4].x)*(coeff_o[2][4] + coeff_f[2][4]*f);
+	  s_a_y[2][4] = (s[3][4].y - s[0][4].y)*(coeff_o[2][4] + coeff_f[2][4]*f);
+	  
+	  s[2][4].x = s_a_x[2][4] + s[0][4].x;
+	  s[2][4].y = s_a_y[2][4] + s[0][4].y;
+	 
+	 
+	 
+	 
+	  s_a_x[1][0] = (s[3][0].x - s[0][0].x)*(coeff_o[1][0] + coeff_f[1][0]*f);
+	  s_a_y[1][0] = (s[3][0].y - s[0][0].y)*(coeff_o[1][0] + coeff_f[1][0]*f);
+	  
+	  
+	  s[1][0].x = s_a_x[1][0] + s[0][0].x;
+	  s[1][0].y = s_a_y[1][0] + s[0][0].y;
+	  
+	 
+	 drawAll();
+	 if(a != 0)
+	 setTimeout('moveLeft('+a+', 1)', 100);
+	}
+	]]>
+  </script>
+</head>
+<body id="body"
+   style="position:absolute; z-index:0; left:0%; top:0%; width:100%; height:100%; margin:0px">
+
+  
+  <svg id="scene" xmlns="http://www.w3.org/2000/svg" version="1.1"
+    viewBox="0 0 0 0"
+    preserveAspectRatio="xMidYMid slice">
+    <line id="ligne_tronc" x1="" y1="" x2="" y2="" stroke="" stroke-width="" />
+    <polygon id="poly_tronc" points="" stroke="black" fill="white" stroke-width="1" fill-rule="nonzero" />
+
+  </svg>
+  <p id="mdr"></p>
+  <p id="lool"></p>
+  <script type="text/javascript">
+  <![CDATA[ 
+
+  
+   
+  
+   var f = 0;
+  
+   var coeff_a = null;
+   
+   var coeff_o = new Array();
+   
+   for(i = 0; i < 4; i++)
+   {
+    coeff_o[i] = new Array();
+   }
+   
+   var coeff_f = new Array();
+   
+   for(i = 0; i < 4; i++)
+   {
+    coeff_f[i] = new Array();
+   }
+
+   
+   var s_a_x = new Array();
+   var s_a_y = new Array();
+   
+   for(i = 0; i < 4; i++)
+   {
+    s_a_x[i] = new Array();
+    s_a_y[i] = new Array();
+   }
+  
+  
+   var neo_line = document.getElementById("ligne_tronc");
+
+	
+   var L = 87.5; //longueur du mur principal
+   var l = 50; //largeur du mur principal
+	
+   var O = new point(0, 0); //origine de l'ecran
+   var Oprim = new point(350-L/4, 350-l/3.33);
+   
+   var B = new Array(); //les bases
+   B[1] = new base(Oprim, 1, 0, 0, -1); 
+  
+  
+   
+   
+   var s = new Array(); //les points de structure
+   
+   //les differents niveaux de mur (du plus loin au plus en arriere)
+   
+   for(i = 0; i < 4; i++) s[i] = new Array();
+
+   
+   
+   s[0][0] = new point(0, 0, B[1]);
+   s[0][1] = new point(3*(L/2), 0, B[1]);
+   s[0][2] = new point(3*(L/2), 1.33*l/3.33, B[1]);
+   s[0][3] = new point(0, 1.33*l/3.33, B[1]);
+   
+   
+   s[3][0] = new point(-21*(L/4), -7*(l/3.33), B[1]);
+   s[3][1] = new point(s[3][0].x + 12*L, s[3][0].y, B[1]);
+   s[3][3] = new point(s[3][0].x, (1.33*(l/3.33))+7*(l/3.33), B[1]);
+   s[3][2] = new point(s[3][1].x, s[3][3].y, B[1]);
+   
+   
+   getAllPoints();
+   
+   drawAll();
+   
+   
+   var coeff = new Array();
+  
+   for(j = 0; j <= 1; j++)
+   {
+    coeff[i] = new Array(); //0 = axe des x ; 1 = axe des y;
+    for(i = 0; i <= 3; i++)
+     coeff[j][i] = new Array();
+   }
+   
+   
+   //getCoeffMoveLeft();
+   //setTimeout('moveLeft(20, 1)', 100);
+   
+   
+
+   
+
+   
+   
+ 
+ 
+   /*
+
+  
+   var direction = 1;
+   
+   var map = new Array()
+   
+   map[0] = new Array('*','*','*','*','*');
+   map[1] = new Array(' ','*',' ','*','*');
+   map[2] = new Array('*',' ',' ',' ',' ');
+   map[3] = new Array('*',' ',' ','*','*');
+   map[4] = new Array('*',' ','*','*','*');
+   
+   var joueur = new Array(2, 3);
+   
+   //var noir = new wall(s_hg, k2_gb, k2_db, s_hd);
+  
+
+  */
+  
+  
+  ]]>
+  </script>
+  
+ </body>
+</html>
+	
+	

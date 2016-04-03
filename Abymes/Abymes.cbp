@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Abymes" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="default">
+				<Option output="Abymes" prefix_auto="1" extension_auto="1" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+		</Build>
+		<Unit filename="affichageGraphique.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="affichageGraphique.h" />
+		<Unit filename="chargementCarte.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="console.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="fonctions.h">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="fonctionsGraphiques.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="fonctionsJoueur.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="initialisationsStructures.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="menuGraphique.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="structures.h">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

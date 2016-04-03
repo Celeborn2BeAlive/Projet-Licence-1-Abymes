@@ -1,0 +1,61 @@
+CONSTANTES :
+ int LONGUEUR // Longueur du mur situé juste devant le joueur
+ int LARGEUR // Largeur du mur situé juste devant le jour
+ 
+ 
+
+VARIABLES :
+ mobile player; //represente le joueur dans le labyrinthe
+ 
+ char map[][]; //tableau representant la map
+ 
+ 
+ 
+ 
+STRUCTURES :
+ struct mobile
+ {
+  int x;
+  int y;
+  
+  int direction;
+ }
+
+ 
+
+
+
+ struct point
+ {
+  double coords[2];
+ }
+ 
+ struct droiteaffine
+ {
+  point* origine;
+  double coefficient;
+ }
+ 
+ struct wall
+ {
+  point* sommet[4];
+ }
+ 
+ 
+ 
+FONCTIONS :
+ point getTrueCoords(point p); //renvoie les coordonnées du point dans le systeme de coordonnées de l'ecran
+ 
+ wall** initWalls(); //renvoie un tableau contenant les mur
+ int** loadMap(); //renvoie un tableau indiquant les mur chargés
+ 
+ void getMovingCoefficients(int permutation, double** coeffs, double* coeff_o, double* coeff_f);
+ 
+ 
+ 
+ 
+ 
+ fonctions d'initialisations
+ fonctions de calculs
+ fonctions de tracage
+ 

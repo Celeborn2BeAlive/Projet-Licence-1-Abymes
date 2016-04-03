@@ -1,0 +1,35 @@
+# Project: Abymes
+# Makefile created by Dev-C++ 4.9.9.1
+
+CPP  = g++.exe
+CC   = gcc.exe
+WINDRES = windres.exe
+RES  = 
+OBJ  = main.o chargementCarte.o console.o $(RES)
+LINKOBJ  = main.o chargementCarte.o console.o $(RES)
+LIBS =  -L"D:/Logiciels/Dev-Cpp/lib"  
+INCS =  -I"D:/Logiciels/Dev-Cpp/include" 
+CXXINCS =  -I"D:/Logiciels/Dev-Cpp/include/c++/3.3.1"  -I"D:/Logiciels/Dev-Cpp/include/c++/3.3.1/mingw32"  -I"D:/Logiciels/Dev-Cpp/include/c++/3.3.1/backward"  -I"D:/Logiciels/Dev-Cpp/lib/gcc-lib/mingw32/3.3.1/include"  -I"D:/Logiciels/Dev-Cpp/include" 
+BIN  = Abymes.exe
+CXXFLAGS = $(CXXINCS)  
+CFLAGS = $(INCS)  
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before Abymes.exe all-after
+
+
+clean: clean-custom
+	rm -f $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CC) $(LINKOBJ) -o "Abymes.exe" $(LIBS)
+
+main.o: main.c
+	$(CC) -c main.c -o main.o $(CFLAGS)
+
+chargementCarte.o: chargementCarte.c
+	$(CC) -c chargementCarte.c -o chargementCarte.o $(CFLAGS)
+
+console.o: console.c
+	$(CC) -c console.c -o console.o $(CFLAGS)

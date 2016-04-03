@@ -1,0 +1,59 @@
+# depslib dependency file v1.0
+1210663570 source:j:\matrice\abymes\fonctionsgraphiques.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	"structures.h"
+	"fonctions.h"
+
+1210501415 j:\matrice\abymes\structures.h
+
+1210663576 j:\matrice\abymes\fonctions.h
+
+1210322647 source:j:\matrice\abymes\fonctionsjoueur.c
+	<stdio.h>
+	<stdlib.h>
+	"structures.h"
+	"fonctions.h"
+
+1210524216 source:j:\matrice\abymes\initialisationsstructures.c
+	<stdio.h>
+	<stdlib.h>
+	"structures.h"
+
+1210322661 source:j:\matrice\abymes\console.c
+	<stdio.h>
+	<stdlib.h>
+	"structures.h"
+	"fonctions.h"
+
+1210317883 source:j:\matrice\abymes\chargementcarte.c
+	<stdio.h>
+	<stdlib.h>
+	"structures.h"
+	"fonctions.h"
+
+1210522716 source:j:\matrice\abymes\main.c
+	<stdio.h>
+	<stdlib.h>
+	"structures.h"
+	"fonctions.h"
+
+1210524604 source:j:\matrice\abymes\menugraphique.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	"structures.h"
+	"fonctions.h"
+
+1210527609 source:j:\matrice\abymes\affichagegraphique.c
+	<stdio.h>
+	<stdlib.h>
+	<MlvTypeC.h>
+	<MlvProcC.h>
+	"structures.h"
+	"fonctions.h"
+	"affichageGraphique.h"
+
+1210662842 j:\matrice\abymes\affichagegraphique.h
+

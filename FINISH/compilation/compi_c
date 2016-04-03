@@ -1,0 +1,11 @@
+################################################################################
+# compi_c : Procedure de compilation de programmes C utilisant la librairie    #
+#           graphique libMlv.a                                                 #
+################################################################################
+MLV_LIBRARY="/tsi/nasik/maugey/local/LibMLV/libMlv/lib" 
+MLV_INCLUDE="/tsi/nasik/maugey/local/LibMLV/libMlv/include" 
+MLV_XWINDOW_INCLUDE="/usr/X11R6/include" 
+MLV_XWINDOW_LIBRARY="/usr/X11R6/lib" 
+FLAGS="-Wall -ansi"
+CC=gcc
+$CC -I$MLV_XWINDOW_INCLUDE -I$MLV_INCLUDE $FLAGS $* -L$MLV_LIBRARY -L$MLV_XWINDOW_LIBRARY -lMlv -lX11 -lm

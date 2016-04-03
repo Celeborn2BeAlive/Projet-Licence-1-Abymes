@@ -1,0 +1,42 @@
+creation tableau s (points structure) s[32]
+creation tableau w** (murs) w[][]
+creation tableau loading_walls**
+
+
+initialisation s
+initialisation permutations
+initialisation tableau w
+
+
+initialisation loading_walls
+tracage de la map
+
+MOUVEMENT :
+
+ detection type mouvement
+ 
+ creation des coefficient de mouvement
+  coeffs
+  coeffs_origine
+  coeffs_final
+ 
+ obtention des coefficient de mouvement
+ 
+ demarage du mouvement (20 etapes)
+  à chaque etape 
+   tracage de la map
+ fin mouvement
+
+ changement direction
+ changement position
+
+ reinitialisation
+
+
+REINITIALISATION :
+
+ initialisation s
+ 
+ initialisation loading_walls
+ traçage de la map 
+  

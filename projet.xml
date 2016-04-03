@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Projet C</title>
+  <style>
+    
+  </style>
+  <script type="text/javascript">
+   <![CDATA[ 
+   
+    function base(origine, v1_x, v1_y, v2_x, v2_y)
+	{
+	 this.O = origine;
+	 this.v1_x = v1_x;
+	 this.v1_y = v1_y;
+	 this.v2_x = v2_x;
+	 this.v2_y = v2_y;
+	}
+   
+    function wall(p1, p2, p3, p4)
+	{
+	 this.p1 = p1;
+	 this.p2 = p2;
+	 this.p3 = p3;
+	 this.p4 = p4;
+	}
+   
+    function point(x, y, base)
+	{
+	 this.x = x;
+	 this.y = y;
+	 
+	 if(base != null) this.base = base;
+	 else this.base = "O";
+	}
+    
+	
+	function drawLine(point1, point2, color)
+	{
+	 if(point1.base != "O")
+	 {
+	  p1_x = ((point1.base.v1_x)*point1.x  + (point1.base.v2_x)*point1.y) + point1.base.O.x;
+	  p1_y = ((point1.base.v1_y)*point1.x  + (point1.base.v2_y)*point1.y) + point1.base.O.y;
+	 }
+	 else
+	 {
+	  p1_x = point1.x;
+	  p1_y = point1.y;
+	 }
+	 
+	 if(point2.base != "O")
+	 {
+	  p2_x = ((point2.base.v1_x)*point2.x  + (point2.base.v2_x)*point2.y) + point2.base.O.x;
+	  p2_y = ((point2.base.v1_y)*point2.x  + (point2.base.v2_y)*point2.y) + point2.base.O.y;
+	 }
+	 else
+	 {
+	  p2_x = point2.x;
+	  p2_y = point2.y;
+	 }
+	 
+	 
+	 var new_line = document.getElementById("ligne_tronc").cloneNode(true);
+	 new_line.setAttribute("x1", p1_x);
+	 new_line.setAttribute("y1", p1_y);
+	 new_line.setAttribute("x2", p2_x);
+	 new_line.setAttribute("y2", p2_y);
+	 
+	 
+	 if(color == null) new_line.setAttribute("stroke", "black");
+	 else new_line.setAttribute("stroke", color);
+	 
+	 
+	 new_line.setAttribute("stroke-width", "1");
+	 
+	 document.getElementById("scene").appendChild(new_line);
+	}
+	
+	function drawRect(p1, p2, p3, p4, c1, c2, c3, c4)
+	{
+	 if(c1 == null && c2 == null && c3 == null && c4 == null) 
+	 {
+	  c1 = "black";
+	  c2 = "black";
+	  c3 = "black";
+	  c4 = "black";
+	 }
+	 else
+	 {
+	  c2 = c1;
+	  c3 = c1;
+	  c4 = c1;
+	 }
+	
+	 drawLine(p1, p2, c1);
+	 drawLine(p2, p3, c2);
+	 drawLine(p3, p4, c3);
+	 drawLine(p4, p1, c4);
+	}
+	
+	function drawWall(wall, color)
+	{
+	 if(wall.p1.base != "O")
+	 {
+	  p1_x = ((wall.p1.base.v1_x)*wall.p1.x  + (wall.p1.base.v2_x)*wall.p1.y) + wall.p1.base.O.x;
+	  p1_y = ((wall.p1.base.v1_y)*wall.p1.x  + (wall.p1.base.v2_y)*wall.p1.y) + wall.p1.base.O.y;
+	 }
+	 else
+	 {
+	  p1_x = wall.p1.x;
+	  p1_y = wall.p1.y;
+	 }
+	 
+	 if(wall.p2.base != "O")
+	 {
+	  p2_x = ((wall.p2.base.v1_x)*wall.p2.x  + (wall.p2.base.v2_x)*wall.p2.y) + wall.p2.base.O.x;
+	  p2_y = ((wall.p2.base.v1_y)*wall.p2.x  + (wall.p2.base.v2_y)*wall.p2.y) + wall.p2.base.O.y;
+	 }
+	 else
+	 {
+	  p2_x = wall.p2.x;
+	  p2_y = wall.p2.y;
+	 }
+	 
+	 if(wall.p3.base != "O")
+	 {
+	  p3_x = ((wall.p3.base.v1_x)*wall.p3.x  + (wall.p3.base.v2_x)*wall.p3.y) + wall.p3.base.O.x;
+	  p3_y = ((wall.p3.base.v1_y)*wall.p3.x  + (wall.p3.base.v2_y)*wall.p3.y) + wall.p3.base.O.y;
+	 }
+	 else
+	 {
+	  p3_x = wall.p3.x;
+	  p3_y = wall.p3.y;
+	 }
+	 
+	 if(wall.p4.base != "O")
+	 {
+	  p4_x = ((wall.p4.base.v1_x)*wall.p4.x  + (wall.p4.base.v2_x)*wall.p4.y) + wall.p4.base.O.x;
+	  p4_y = ((wall.p4.base.v1_y)*wall.p4.x  + (wall.p4.base.v2_y)*wall.p4.y) + wall.p4.base.O.y;
+	 }
+	 else
+	 {
+	  p4_x = wall.p4.x;
+	  p4_y = wall.p4.y;
+	 }
+	 
+	 var new_wall = document.getElementById("poly_tronc").cloneNode(true);
+	 new_wall.setAttribute("points", p1_x+","+p1_y+" "+p2_x+","+p2_y+" "+p3_x+","+p3_y+" "+p4_x+","+p4_y);
+	 
+	 if(color != null) new_wall.setAttribute("fill", color);
+	 
+	 document.getElementById("scene").appendChild(new_wall);
+	}
+	 
+	 
+	
+	
+	function applicationAffine(coeff, point)
+	{
+	 this.coeff = coeff;
+	 this.point = point;
+	 
+	 this.getPoint = getPoint;
+	 
+	 function getPoint(x)
+	 {
+	  var y = this.coeff*x + ((this.coeff*(-this.point.x))+this.point.y);
+	  
+	  return y;
+	 }
+	}
+	
+	function drawAll()
+	{
+	 var nbre_lignes = document.getElementsByTagName('line').length;
+     for(i = 1; i < nbre_lignes; i++)
+     document.getElementsByTagName('svg')[0].removeChild(document.getElementsByTagName('line')[0]);
+	 
+	 drawRect(s_hg, s_bg, s_bd, s_hd, "black");
+	 
+	 var i = 0;
+	 var j = 0;
+	 
+	 /*for(i = 0; i < s.length; i++)
+	 {
+	  drawLine(s[i][0], s[i][7], "blue");
+	  drawLine(s[i][1], s[i][6], "blue");
+	  drawLine(s[i][2], s[i][5], "blue");
+	  drawLine(s[i][3], s[i][4], "blue");
+	  
+	  drawLine(s[i][0], s[i][3], "red");
+      drawLine(s[i][7], s[i][4], "red");
+	 }*/
+	 
+	 
+	 drawLine(s[0][0], s[3][0], "red");
+	 drawLine(s[0][3], s[3][3], "red");
+	 drawLine(s[0][4], s[3][4], "red");
+	 drawLine(s[0][7], s[3][7], "red");
+	 
+	 drawLine(s[0][0], s[0][3], "red");
+	 drawLine(s[0][4], s[0][7], "red");
+	 drawLine(s[3][0], s[3][3], "red");
+	 drawLine(s[3][4], s[3][7], "red");
+	 
+	 drawLine(s[0][0], s[0][7], "blue");
+	 drawLine(s[3][0], s[3][7], "blue");
+	 drawLine(s[3][3], s[3][4], "blue");
+	 drawLine(s[0][3], s[0][4], "blue");
+	 
+	 
+	 /*for(j = 0; j < s[0].length; j++)
+     {
+        drawLine(s[0][j], s[3][j], "red");
+     }	  */
+	 
+	 
+	 /*drawLine(s[0][1], s[1][1], "green")
+     drawLine(s[1][1], s[2][1], "blue")
+	 drawLine(s[2][1], s[3][1], "red")
+	 var h = new point(87.5, 60.06006006006006, B[1]);
+     var k = new point(700, 0, B[1]);
+	 drawLine(h, k, "black")
+	 var h = new point(-525, -360, B[1]);
+     var k = new point(-350, 0, B[1]);
+	 drawLine(h, k, "black")*/
+	
+	 
+	}
+
+	
+	function loadMap()
+	{
+	 var i = 0;
+	 var j = 0;
+	 var a = -1;
+	 var b = 3;
+	 
+	
+	 switch(direction)
+	 {
+	  
+	  
+	  case 0 :
+	  
+	   var c = -1;
+	   
+	   for(i = 2; i >= 0; i--)
+	   {
+	    b--;
+	    for(j = -1; j <= 1; j++)
+		{
+		 c++;
+		 if((joueur[0] - i) >= 0 && (joueur[1] + j) >= 0 && (joueur[1] + j) < map[0].length)
+		  { 
+		   if(map[joueur[0] - i][joueur[1] + j] == '*')
+		   {
+		    a++;
+		    walls_load[a] = walls[b][c]
+			if(i == 1)
+			{
+			 a++
+			 if(j == -1) walls_load[a] = walls[1][3];
+			 if(j == 1) walls_load[a] = walls[1][4];
+			}
+		   }
+		  }
+		  if(j == 1) c = -1;
+		 }
+		}
+	   
+	  break;
+	  
+	  case 1 :
+	  
+	   var c = -1;
+	   
+	   for(j = 2; j >= 0; j--)
+	   {
+	    b--;
+	    for(i = -1; i <= 1; i++)
+	    {
+		 c++;
+		 if((joueur[0] + i) >= 0 && (joueur[0] + i) < map.length && (joueur[1] + j) < map[0].length)
+		  { 
+		   if(map[joueur[0] + i][joueur[1] + j] == '*')
+		   {
+		    a++;
+		    walls_load[a] = walls[b][c]
+			if(j == 1)
+			{
+			 a++
+			 if(i == -1) walls_load[a] = walls[1][3];
+			 if(i == 1) walls_load[a] = walls[1][4];
+			}
+		   }
+		  }
+		  if(i == 1) c = -1;
+		 }
+		}
+	  
+	  break;
+	  
+	  case 2 :
+	   
+	   var c = 3;
+	   
+	   for(i = 2; i >= 0; i--)
+	   {
+	    b--;
+	    for(j = -1; j <= 1; j++)
+		{
+		 c--;
+		 if((joueur[0] + i) < map.length && (joueur[1] + j) >= 0 && (joueur[1] + j) < map[0].length)
+		  { 
+		   if(map[joueur[0] + i][joueur[1] + j] == '*')
+		   {
+		    a++;
+		    walls_load[a] = walls[b][c]
+			if(i == 1)
+			{
+			 a++
+			 if(j == 1) walls_load[a] = walls[1][3];
+			 if(j == -1) walls_load[a] = walls[1][4];
+			}
+		   }
+		  }
+		  if(j == 1) c = 3;
+		 }
+		}
+	  
+	  break;
+	  
+	  
+	  case 3 :
+	  
+	   var c = 3;
+	   
+	   for(j = 2; j >= 0; j--)
+	   {
+	    b--;
+	    for(i = -1; i <= 1; i++)
+	    {
+		 c--;
+		 if((joueur[0] + i) >= 0 && (joueur[0] + i) < map.length && (joueur[1] - j) >= 0)
+		  { 
+		   if(map[joueur[0] + i][joueur[1] - j] == '*')
+		   {
+		    a++;
+		    walls_load[a] = walls[b][c];
+			if(j == 1)
+			{
+			 a++;
+			 if(i == 1) walls_load[a] = walls[1][3];
+			 if(i == -1) walls_load[a] = walls[1][4];
+			}
+		   }
+		  }
+		  if(i == 1) c = 3;
+		 }
+		}
+	  
+	  break;
+	 
+	 }
+	}
+	
+	function drawMap()
+	{
+	 var i = null;
+	 for(i = 0; i < walls_load.length; i++)
+	 {
+	  drawWall(walls_load[i]);
+	 }
+	}
+	
+	function calculCoeffMoveLeft()
+	{
+	 var ok = 0;
+	 var i = null;
+	 var j = null;
+	 var a = 3;
+	 var b = 4;
+	 
+	 
+	 for(i = 0; i <= 3; i++)
+	 {
+	  
+	  var c = 1;
+	  for(j = 0; j <= 7; j++)
+	  {
+	   if(j <= 3)
+	   {
+	    if(i == 1 && j == 1)
+		{
+		 coeff_x[i][j] = (s[j][a].x)/20;
+		 coeff_y[i][j] = (s[j][a].y)/20;
+		}
+		else if(i == 2 && j == 1)
+		{
+		 coeff_x[i][j] = (- s[i][j].x)/20;
+		 coeff_y[i][j] = (- s[i][j].y)/20;
+		}
+		else
+	    {
+		 coeff_x[i][j] = (s[j][a].x - s[i][j].x)/20;
+		 coeff_y[i][j] = (s[j][a].y - s[i][j].y)/20;
+		}
+		ok = 0;
+	   }
+	   else
+	   {
+	    coeff_x[i][j] = (s[j-c][b].x - s[i][j].x)/20;
+		coeff_y[i][j] = (s[j-c][b].y - s[i][j].y)/20;
+		c += 2;
+		ok = 1;
+	   }
+	  }
+	  a--;
+	  b++;
+	 }
+	 
+	 
+	}
+	
+	function moveLeft(a)
+	{
+	
+	 a--;
+	 var i = null;
+	 var j = null;
+	 
+	 for(i = 0; i <= 3; i++)
+	 {
+	  for(j = 0; j <=7; j++)
+	  {
+	   document.getElementById("lool").innerHTML += "<br />X s"+i+","+j+" : "+s[i][j].x+" + "+coeff_x[i][j]+"<br />Y s"+i+","+j+" : "+s[i][j].y+" + "+coeff_y[i][j]+"<br />";
+	   s[i][j].x = s[i][j].x + 0*coeff_x[i][j];
+	   s[i][j].y = s[i][j].y + 0*coeff_y[i][j];
+	  }
+	 }
+	 
+	 
+	 drawAll();
+	}
+	 
+	
+	]]>
+  </script>
+</head>
+<body id="body"
+   style="position:absolute; z-index:0; left:0%; top:0%; width:200%; height:200%; margin:0px">
+
+  
+  <svg id="scene" xmlns="http://www.w3.org/2000/svg" version="1.1"
+    viewBox="0 0 0 0"
+    preserveAspectRatio="xMidYMid slice">
+    <line id="ligne_tronc" x1="" y1="" x2="" y2="" stroke="" stroke-width="" />
+    <polygon id="poly_tronc" points="" stroke="black" fill="white" stroke-width="1" fill-rule="nonzero" />
+
+  </svg>
+  <p id="mdr"></p>
+  <p id="lool"></p>
+  <script type="text/javascript">
+  <![CDATA[ 
+    
+   var O = new point(0, 0); //origine de l'ecran
+   
+  
+   var L = 350; //longueur du mur principal
+   var l = 200; //largeur du mur principal
+   
+   var s = new Array(); //les points de structure
+   var B = new Array(); //les bases
+   
+   //les differents niveaux de mur (du plus loin au plus en arriere)
+   s[0] = new Array();
+   s[1] = new Array();
+   s[2] = new Array();
+   s[3] = new Array();
+   
+   s[1][1] = new point(350, 350); //point inferieur gauche du mur principal
+   var b1_bis = new point(350, 350);
+   
+   
+   B[1] = new base(b1_bis, 1, 0, 0, -1); //declaration de la base d'origine b[1][1]
+   
+   //niveau 1 :
+   s[1][2] = new point(L, 0, B[1]);
+   s[1][6] = new point(0, l, B[1]);
+   s[1][5] = new point(L, l, B[1]);
+   
+   s[1][0] = new point(-L, 0, B[1]);
+   s[1][3] = new point(2*L, 0, B[1]);
+   s[1][4] = new point(2*L, l, B[1]);
+   s[1][7] = new point(-L, l, B[1]);
+  
+   //niveau 2 :
+   s[0][1] = new point(L/4, l/3.33, B[1]); 
+   s[0][0] = new point(s[0][1].x - L/2, s[0][1].y, B[1]);
+   s[0][2] = new point(s[0][1].x + L/2, s[0][1].y, B[1]);
+   s[0][3] = new point(s[0][1].x + L, s[0][1].y, B[1]);
+  
+  
+   var coeff_p = s[0][1].y/s[0][1].x; //coefficient principal
+   
+   //declaration des 4 droites principales :
+   var alpha = new applicationAffine(coeff_p, O);
+   
+   var gama = new applicationAffine(-coeff_p, s[1][6]);
+   
+   var delta = new applicationAffine(coeff_p, s[1][5]);
+   
+   var beta = new applicationAffine(-coeff_p, s[1][2]);
+   
+   //suite niveau 2 :
+   
+   s[0][6] = new point(s[0][1].x, gama.getPoint(s[0][1].x), B[1]);
+   s[0][7] = new point(s[0][6].x - L/2, s[0][6].y, B[1]);
+   s[0][5]= new point(s[0][6].x + L/2, s[0][6].y, B[1]);
+   s[0][4] = new point(s[0][6].x + L, s[0][6].y, B[1]);
+   
+   
+   //niveau -1 : 
+   
+   s[2][1] = new point(-L/2, alpha.getPoint(-L/2), B[1]);
+   s[2][0] = new point(s[2][1].x - 2*L, s[2][1].y, B[1]);
+   s[2][2] = new point(s[2][1].x + 2*L, s[2][1].y, B[1]);
+   s[2][3] = new point(s[2][1].x + 4*L, s[2][1].y, B[1]);
+   
+   s[2][6] = new point(-L/2, gama.getPoint(-L/2), B[1]);
+   s[2][7] = new point(s[2][6].x - 2*L, s[2][6].y, B[1]);
+   s[2][5] = new point(s[2][6].x + 2*L, s[2][6].y, B[1]);
+   s[2][4] = new point(s[2][6].x + 4*L, s[2][6].y, B[1]);
+   
+   
+   //niveau -2 : 
+   
+   s[3][1] = new point(-3*L/2, alpha.getPoint(-3*L/2), B[1]);
+   s[3][0] = new point(s[3][1].x - 4*L, s[3][1].y, B[1]);
+   s[3][2] = new point(s[3][1].x + 4*L, s[3][1].y, B[1]);
+   s[3][3] = new point(s[3][1].x + 8*L, s[3][1].y, B[1]);
+   
+   s[3][6] = new point(-3*L/2, gama.getPoint(-3*L/2), B[1]);
+   s[3][7] = new point(s[3][6].x - 4*L, s[3][6].y, B[1]);
+   s[3][5] = new point(s[3][6].x + 4*L, s[3][6].y, B[1]);
+   s[3][4] = new point(s[3][6].x + 8*L, s[3][6].y, B[1]);
+   
+   //coins du cadre de vision: 
+   
+   var s_hg = new point(-30, gama.getPoint(-30), B[1]);
+   var s_hd = new point(L+30, delta.getPoint(L+30), B[1]);
+   var s_bg = new point(-30, alpha.getPoint(-30), B[1]);
+   var s_bd = new point(L+30, beta.getPoint(L+30), B[1]);
+  
+   //points clef du cadre :
+   
+   //niveau 2 :
+   var k2_gb = new point(-30, alpha.getPoint(s[0][1].x), B[1]);
+   var k2_gh = new point(-30, gama.getPoint(s[0][6].x), B[1]);
+   var k2_db = new point(L+30, beta.getPoint(s[0][2].x), B[1]);
+   var k2_dh = new point(L+30, delta.getPoint(s[0][5].x), B[1]);
+   
+   //niveau 1 :
+   var k1_gb = new point(-30, 0, B[1]);
+   var k1_gh = new point(-30, gama.getPoint(s[1][6].x), B[1]);
+   var k1_db = new point(L+30, beta.getPoint(s[1][2].x), B[1]);
+   var k1_dh = new point(L+30, delta.getPoint(s[1][5].x), B[1]);
+  
+   //drawRect(s_hg, s_bg, s_bd, s_hd, "black");
+   
+  
+  
+  
+   //murs principaux :
+   var walls = new Array();
+   walls[0] = new Array();
+   walls[1] = new Array();
+   walls[2] = new Array();
+   
+   walls[2][0] = new wall(k2_gb, s[0][1], s[0][6], k2_gh);
+   walls[2][1] = new wall(s[0][1], s[0][2], s[0][5], s[0][6]);
+   walls[2][2] = new wall(s[0][2], k2_db, k2_dh, s[0][5]);
+   
+   walls[1][0] = new wall(k1_gb, s[1][1], s[1][6], k1_gh);
+   walls[1][1] = new wall(s[1][1], s[1][2], s[1][5], s[1][6]);
+   walls[1][2] = new wall(s[1][2], k1_db, k1_dh, s[1][5]);
+   walls[1][3] = new wall(s[1][1], s[0][1], s[0][6], s[1][6]);
+   walls[1][4] = new wall(s[1][2], s[0][2], s[0][5], s[1][5]);
+   
+   walls[0][0] = new wall(s_hg, s[1][6], s[1][1], s_bg);
+   walls[0][2] = new wall(s_hd, s[1][5], s[1][2], s_bd);
+   
+   
+   
+   //mur a charger/chargés :
+   var walls_load = new Array();
+  
+   var direction = 1;
+   
+   var map = new Array()
+   
+   map[0] = new Array('*','*','*','*','*');
+   map[1] = new Array(' ','*',' ','*','*');
+   map[2] = new Array('*',' ',' ',' ',' ');
+   map[3] = new Array('*',' ',' ','*','*');
+   map[4] = new Array('*',' ','*','*','*');
+   
+   var joueur = new Array(2, 3);
+   
+   var noir = new wall(s_hg, k2_gb, k2_db, s_hd);
+   //drawWall(noir, "black");
+   
+   //loadMap();
+   //drawMap();
+   
+   var coeff_x = new Array();
+   var coeff_y = new Array();
+   
+   for(i = 0; i < 4; i++)
+   {
+    coeff_x[i] = new Array();
+    coeff_y[i] = new Array();
+   }
+   
+   
+   
+   calculCoeffMoveLeft()
+   moveLeft(20);
+   
+   var h = new point((2*s[0][3].x + s[0][0].x)/3, (2*s[0][3].y + s[0][0].y)/3, B[1]);
+   var k = new point((2*s[0][4].x + s[0][7].x)/3, (2*s[0][4].y + s[0][7].y)/3, B[1]);
+
+   drawLine(h, k);
+   
+   var h = new point((s[0][3].x + 2*s[0][0].x)/3, (s[0][3].y + 2*s[0][0].y)/3, B[1]);
+   var k = new point((s[0][4].x + 2*s[0][7].x)/3, (s[0][4].y + 2*s[0][7].y)/3, B[1]);
+   
+   drawLine(h, k);
+   
+   //loadMap();
+   //drawMap();
+
+  ]]>
+  </script>
+  
+ </body>
+</html>
+	
+	

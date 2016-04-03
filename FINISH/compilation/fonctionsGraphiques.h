@@ -1,0 +1,11 @@
+point* initPerm(int* permutation, point* s);
+point getTrueCoords(point p);
+double obtenirCoordX(droiteaffine d, double y);
+double obtenirCoordY(droiteaffine d, double x);
+void initPoints(point* s);
+void initMurs(point* p, point* p_arriere, mur** m);
+void initGraphique(int** carte, mobile* joueur, int* nbre_lignes, int* nbre_colonnes, int murs_charges[][12], point* p, point* s);
+void chargementMurs(mobile joueur, int** carte, int nbre_lignes, int nbre_colonnes, int murs_charges[][12]);
+void calculCoefficientsMouvement(point* permutation, point* s, double coeff[][32], double* coeff_o, double* coeff_f);
+void deplacementPoints(point* s, int etape_deplacement, double coeff[][32], double* coeff_o, double* coeff_f);
+void initEcran(point* screen_right_top, point* screen_right_down, point* screen_left_down, point* screen_left_top, point* s);
